@@ -53,6 +53,6 @@ function openJobMenu()
     })
     Wait(500)
     SendNUIMessage({
-        action = 'bankmenu',
+        action = 'dashboard',
     })
 end
