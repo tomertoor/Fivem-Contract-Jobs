@@ -1,29 +1,47 @@
-Contract{}
+-- ESX.RegisterServerCallback("sql_jobs:increaceQuantity"
+-- , function(src, cb, jobType)
+--     MySQL.Async.execute("UPDATE ")
+-- end)
 
--- Contract.GetLevel = function(player, jobType)
--- end
 
-Contract.GetDelivers = function(id)
-end
+ESX.RegisterServerCallback("sql_jobs:getDelivers"
+, function(src, cb, target)
+    MySQL.Async.fetchAll("SELECT deliveries FROM deliveries WHERE identifier=@playerId;",
+    {
+        ["@playerId"] = GetPlayerIdentifiers(target)
+    },
+    function(result)
+        cb(result[1].deliveries)
+    end)
+ end)
 
-Contract.incrementDelivery = function(id)
-end
+ESX.RegisterServerCallback("sql_jobs:incrementDelivery"
+, function(src, cb)
+    MySQL.Async.execute("UPDATE deliveries_contract SET deliveries=deliveries+1 WHERE identifier=@playerId;",
+    {
+        ["@playerId"] = GetPlayerIdentifiers(src)
+    },
+    function(result)
+        cb(result)
+    end)
+ end)
 
-Contract.setDeliveries = function(id)
-end
+ESX.RegisterServerCallback("sql_jobs:setDeliveries"
+, function(src, cb, amount)
+    MySQL.Async.execute("UPDATE delivered_contract SET deliveries = @value WHERE identifier = @playerIdentifier;",
+    {
+        ["@value"]            = amount,
+        ["@playerIdentifier"] = GetPlayerIdentifiers(src)[1]
+    },
+    function(result)
+        cb(result)
+    end)
+ end)
 
---- Resets the deliveries for a specific player.
--- Resets to 0 in the SQL.
--- @param id - The ID number of the player for example from RegisterCommand(source)
--- @return 0 For success or 1 for failure
-Contract.resetDeliveries = function(id)
-    MySQL.Async.execute("UPDATE delivered_contract SET deliveries = 0 WHERE identifier = @playerIdentifier",
-    { ["@playerIdentifier"] = GetPlayerIdentifiers(id)[1]},
-    function(result)end)
-end
-
-AddEventHandler("onResourceStart", function(resource)
-    if resource == "contract-jobs" then
-
-    end
+ESX.RegisterServerCallback("sql_jobs:resetDeliveries", function(src, cb)
+    MySQL.Async.execute("UPDATE delivered_contract SET deliveries = 0 WHERE identifier = @playerIdentifier;",
+    { ["@playerIdentifier"] = GetPlayerIdentifiers(src)[1]},
+    function(result)
+        cb(result)
+    end)
 end)

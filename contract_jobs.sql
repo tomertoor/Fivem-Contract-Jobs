@@ -30,6 +30,13 @@ CREATE TABLE IF NOT EXISTS `delivered_contract` (
 
 -- Data exporting was unselected.
 
+-- Dumping structure for table contract_jobs.resource_quantities
+CREATE TABLE IF NOT EXISTS `resource_quantities` (
+  `owner_identifier` int(11) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='This database hold all the quantities for each job';
+
+-- Data exporting was unselected.
+
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 /*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;
 /*!40014 SET FOREIGN_KEY_CHECKS=IFNULL(@OLD_FOREIGN_KEY_CHECKS, 1) */;
