@@ -15,14 +15,13 @@ server_scripts {
 
 client_scripts {
 	'config.lua',
-	'client/main.lua'
+	'client/main.lua',
+	'client/utils.lua',
+	'client/ui.lua'
 }
 
---[[ui_page 'html/ui.html'
+ui_page 'html/ui.html'
 
 files {
-	'html/ui.html',
-	'html/css/app.css',
-	'html/scripts/app.js'
+	'html/*.*'
 }
-]]
