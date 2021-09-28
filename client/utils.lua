@@ -34,11 +34,6 @@ function StartCarContract() -- cardealers comment
 end
 
 function SpawnCarTrailer() -- cardealers
-
-    if not IsModelInCdimage("tr2") or not IsModelAVehicle("tr2") then
-        return
-    end
-
     -- load the model
     RequestModel("tr2")
 
