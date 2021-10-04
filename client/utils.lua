@@ -20,8 +20,6 @@ function StartCarContract() -- cardealers comment
     local FeePerExtraDelivery = 850
 
     ESX.TriggerServerCallback("isTruckOwned", function(HasTruck)
-        local HasTruck = 't680'
-        local SpawnCarTrailer = 'tr2'
         if HasTruck then
             SpawnCarTrailer()
         else
@@ -48,4 +46,29 @@ function SpawnCarTrailer() -- cardealers
         args = { 'Nice, now go deliver the cars to the dealer.' }
     })
 
+end
+
+function SpawnTrailer(jobType)
+    print(jobType)
+
+    local pos =  Config[jobType].trailerSpawn
+    local vehicleType = Config[jobType].vehicle
+    print(jobType)
+    RequestModel(vehicleType)
+
+    while not HasModelLoaded(vehicleType) do
+        Wait(500)
+    end
+
+    local vehicle = CreateVehicle(vehicleType, pos.x, pos.y, pos.z, pos.w, true, false)
+
+end
+
+function SpawnContractItems(contract)
+    if contract.type == "car" then
+        
+    end
+end
+
+function spawnDelieveryMarkers()
 end

@@ -45,3 +45,4 @@ ESX.RegisterServerCallback("sql_jobs:resetDeliveries", function(src, cb)
         cb(result)
     end)
 end)
+

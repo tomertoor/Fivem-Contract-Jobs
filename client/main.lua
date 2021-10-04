@@ -1,5 +1,6 @@
 ESX = {}
 PlayerData = {}
+onContract = false
 
 Citizen.CreateThread(function()
     while ESX == nil do
@@ -27,7 +28,6 @@ end)
 
 Citizen.CreateThread(function()
     while true do
-        --print(PlayerData.job.name)
         if PlayerData.job and PlayerData.job.name == "truckerm" then
             local Player = GetPlayerPed(-1)
             local playerCoords = GetEntityCoords(Player)
@@ -56,3 +56,29 @@ function openJobMenu()
         action = 'dashboard',
     })
 end
+
+RegisterNetEvent("trucking:startContract")
+AddEventHandler("trucking:startContract", function(details)
+    SpawnTrailer(details.type)
+    SpawnContractItems(details)
+    onContract = true
+    local mk = Config.DelieverMarker
+    local delieverPoint = Config[jobType].delieveryPoint
+    local Player = GetPlayerPed(-1)
+    local playerCoords = GetEntityCoords(Player)
+    Citizen.CreateThread(function()
+        while onContract do
+            local distance = GetDistanceBetweenCoords(playerCoords.x, playerCoords.y, playerCoords.z, delieverPoint.x, delieverPoint.y, delieverPoint.z)
+            if distance < 50 then
+                DrawMarker(mk.type, delieverPoint.x, delieverPoint.y, delieverPoint.z, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, mk.scale.x, mk.scale.y, mk.scale.z, mk.color.r, mk.color.g, mk.color.b, mk.color.a, false, true, 2, false, false, false, false)
+                if distance < 10 then
+                    DrawMarker(20, delieverPoint.x, delieverPoint.y, delieverPoint.z, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, mk.scale.x, mk.scale.y, mk.scale.z, mk.color.r, mk.color.g, mk.color.b, mk.color.a, false, true, 2, false, false, false, false)
+                    DrawText3Ds(Config.dashboard.x, Config.dashboard.y, Config.dashboard.z, "~y~[G]~s~ Open Dashboard")
+                    if IsControlJustPressed(0, 47) then
+                        
+                    end
+                end
+            end
+        end
+    end)
+end)

@@ -1,3 +1,11 @@
+ESX = nil
+
+Citizen.CreateThread(function()
+    while ESX == nil do
+        TriggerEvent('esx:getSharedObject', function(obj) ESX = obj end)
+        Citizen.Wait(0)
+    end
+end)
 
 RegisterNUICallback("action", function(data)
     print(data.action)
@@ -8,7 +16,7 @@ end)
 
 RegisterNUICallback("retreiveContracts", function(cb)
     -- contracts is test case for available contracts
-    contracts = {
+    --[[contracts = {
         {
             requester = "Tomer",
             type = "car",
@@ -55,8 +63,18 @@ RegisterNUICallback("retreiveContracts", function(cb)
         }
     }
     print(contracts[1].requester)
-    print("length is " .. #contracts[1])
-    --ESX.TriggerServerCallback("trucking:getContracts", function(contracts) 
+    print("length is " .. #contracts[1])]]
+    ESX.TriggerServerCallback("trucking:getAvailableContracts", function(contracts) 
+        print("length is: " .. contracts[1].items)
         SendNUIMessage({action = "contracts_page", info = contracts})        
-    --end, source)
+    end, source)
+end)
+
+RegisterNUICallback("takeContract", function(id)
+    print("ID IS " .. id.data)
+    ESX.TriggerServerCallback("trucking:checkAvailableContract", function(isTaken) 
+        if isTaken then
+            SendNUIMessage({action = "contractTaken"})
+        end
+    end, id.data)
 end)

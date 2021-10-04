@@ -280,6 +280,18 @@ $(document).on('click', ".close-atm", function() {
 	selectedWindow = "none";
 })
 
+function take_contract(id)
+{
+	console.log("CLICKING");
+	var click_sound = new Audio('popup.mp3');
+	click_sound.volume = 0.2;
+	click_sound.play();
+	$.post('https://dprp_trucking/takeContract', JSON.stringify({
+		data: id
+	}));
+}
+
+
 function checkIfEmpty() {
     // Deposit
     if (document.getElementById("deposit_value").value === "") {
@@ -334,12 +346,14 @@ function contracts_page(contracts)
 		}
 		//if(contract.type == "car")
 		//{
+			//icon = '<td class="align-middle"><span style="background-color: #1d1e24; padding: 5px 10px 5px 10px; border-radius: 10px;"><i class="bi bi-download"></i></span></td>';
 			icon = '<td class="align-middle"><span style="background-color: #1d1e24; padding: 5px 10px 5px 10px; border-radius: 10px;"><i class="bi bi-download"></i></span></td>';
-			data = `<td class="align-middle" style="font-weight: 500; font-size: 16px;">
+			data = `<td class="align-middle" style="font-weight: 500; font-size: 16px;"><span style="color: #1f5eff; font-weight: 600;">${contract.type} Delievery </span>
 						From <span style="color: #1f5eff; font-weight: 600;">${contract.requester}</span>
 						<div style="margin-top: -5px;">${items}</div>
 					</td>`;
-			amount = `<td class="align-middle" style="font-weight: 500;"><span style="color: #2ecc71; float: right;">+ ${contract.money.toLocaleString()} USD</span> </td>`;
+			button = `<td class="align-middle"><button class="take-button" onclick="take_contract(${i+1});"></button></td>`; // PROBABLY WILL HAVE TO USE A GLOBAL TO DEFINE IF MULTIPLE PAGES
+			amount = `<td class="align-middle" style="font-weight: 500;">Profit: <span style="color: #2ecc71; float: right;"> ${contract.money.toLocaleString()} USD</span> </td>`;
 		//}
 		/*else if(contract.type == "fuel")
 		{
@@ -353,7 +367,9 @@ function contracts_page(contracts)
 			`<tr>
 				${icon}
 				${data}
+				${button}
 				${amount}
+
 			</tr>`
 		
 
