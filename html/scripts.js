@@ -337,11 +337,12 @@ function contracts_page(contracts)
 	for(var i = 0; i < contracts.length; i++) {
 		numOfContracts++
 		var contract = contracts[i];
-		console.log(contract.requester)
+		console.log(typeof(contract.items))
 		var items = ""
 		for(var j = 0; j < contract.items.length; j++)
 		{
 			var item = contract.items[j];
+			//console.log(typeof(contract.items))
 			items += `${item.label} - ${item.quantity}\n`
 		}
 		//if(contract.type == "car")
@@ -556,7 +557,7 @@ function overview_page_function(event) {
 		</div>
 	`);
 
-	$("#playerName").html(event.data.playerName);
+	/*$("#playerName").html(event.data.playerName);
 	$("#playerBankMoney").html(event.data.playerBankMoney.toLocaleString());
 	$("#playerIBAN").html(event.data.playerIBAN);
 	$("#wallet_money").html(event.data.walletMoney.toLocaleString());
@@ -691,7 +692,7 @@ function overview_page_function(event) {
 
 	var myChart = new Chart (document.getElementById('myChart'), config);
 
-	selectedWindow = "bankmenu";
+	selectedWindow = "bankmenu";*/
 }
 
 function society_page_function(event) {

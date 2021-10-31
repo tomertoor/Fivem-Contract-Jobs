@@ -65,7 +65,7 @@ RegisterNUICallback("retreiveContracts", function(cb)
     print(contracts[1].requester)
     print("length is " .. #contracts[1])]]
     ESX.TriggerServerCallback("trucking:getAvailableContracts", function(contracts) 
-        print("length is: " .. contracts[1].items)
+        print("length is: " .. #contracts[1].items)
         SendNUIMessage({action = "contracts_page", info = contracts})        
     end, source)
 end)

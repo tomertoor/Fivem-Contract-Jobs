@@ -11,18 +11,18 @@ contracts = {
             {
                 name = "adder",
                 label = "Adder",
-                quantity = 2 
+                quantity = 1 
             },
-            {
-                name = "deevo",
-                label = "Deevo",
-                quantity = 2 
-            },
-            {
+            --[[{
                 name = "adder",
                 label = "Adder",
                 quantity = 2 
-            },
+            },]]
+            --[[{
+                name = "formula",
+                label = "Formula",
+                quantity = 1 
+            },]]
         },
         money = 40000
     },
@@ -49,7 +49,7 @@ contracts = {
         money = 40000
     }
 }
---MySQL.Async.execute("INSERT INTO availablecontracts (type, requester, state, items) VALUES (@type, @request, @state, @items)", {["@type"] = contracts[1].type, ["@request"] = contracts[1].requester, ["@state"] = 0, ["@items"] = json.encode(contracts[1].items)})
+MySQL.Async.execute("INSERT INTO availablecontracts (type, requester, state, items) VALUES (@type, @request, @state, @items)", {["@type"] = contracts[1].type, ["@request"] = contracts[1].requester, ["@state"] = 0, ["@items"] = json.encode(contracts[1].items)})
 --print("HIIII")
 --[[MySQL.Async.fetchAll("SELECT * FROM availablecontracts WHERE id=4", {}, function(result)
     print("HELOOOO")
@@ -76,6 +76,19 @@ end)
 ESX.RegisterServerCallback("trucking:getAvailableContracts", function(source, cb)
     MySQL.Async.fetchAll("SELECT * FROM availablecontracts WHERE state=0", {}, function(result)
         print(#result)
+        --result[1].items = json.decode(result[1].items)
+        for i=1,#result,1 do
+            result[i].items = json.decode(result[i].items)
+        end
         cb(result)
     end)
+end)
+
+AddEventHandler("trucking:finishContract", function(details)
+    MySQL.Async.execute("DELETE FROM availablecontracts WHERE id=@orderid", {["@orderid"] = details.id})
+    if details.type == "car" then
+        for k, v in pairs(details.items) do
+            MySQL.Async.execute("UPDATE vehicles SET stock=stock + 1 WHERE id=@orderid", {["@orderid"] = details.id})
+        end
+    end
 end)
